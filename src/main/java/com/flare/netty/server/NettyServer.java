@@ -31,7 +31,9 @@ public class NettyServer {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         AttributeKey attributeKey = AttributeKey.newInstance("clientKey");
         serverBootstrap
+                //指定线程模型
                 .group(bossGroup, workerGroup)
+                //指定为NIO
                 .channel(NioServerSocketChannel.class)
                 // 表示系统用于临时存放已完成三次握手的请求的队列的最大长度，如果连接建立频繁，服务器处理创建新连接较慢，可以适当调大这个参数
                 .option(ChannelOption.SO_BACKLOG,1024)
@@ -42,6 +44,7 @@ public class NettyServer {
                 // 是否开启Nagle算法，true表示关闭，false表示开启，通俗地说，如果要求高实时性，有数据发送时就马上发送，就关闭，
                 // 如果需要减少发送次数减少网络交互，就开启
                 .childOption(ChannelOption.TCP_NODELAY,true)
+                // 处理逻辑
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) {
