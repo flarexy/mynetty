@@ -1,5 +1,7 @@
-package com.flare.netty.entity;
+package com.flare.netty.packet.request;
 
+import com.flare.netty.packet.command.Command;
+import com.flare.netty.packet.Packet;
 import lombok.Data;
 
 /**
@@ -9,9 +11,9 @@ import lombok.Data;
  * @Data 2019/1/15
  */
 @Data
-public class LoginRequestPacket extends Packet{
+public class LoginRequestPacket extends Packet {
 
-    private Integer userId;
+    private String userId;
 
     private String username;
 

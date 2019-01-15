@@ -1,5 +1,8 @@
-package com.flare.netty.entity;
+package com.flare.netty.packet;
 
+import com.flare.netty.packet.command.Command;
+import com.flare.netty.packet.request.LoginRequestPacket;
+import com.flare.netty.packet.response.LoginResponsePacket;
 import com.flare.netty.serialize.Serializer;
 import com.flare.netty.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -16,6 +19,15 @@ import java.util.Map;
  */
 public class PacketCodeC {
     private static final int MAGIC_NUMBER = 0x12345678;
+
+    private static class SingletonHandler {
+        public static PacketCodeC INSTANCE = new PacketCodeC();
+    }
+
+    public static PacketCodeC getInstance(){
+        return SingletonHandler.INSTANCE;
+    }
+
     /**
      * 数据包类型
       */
@@ -31,6 +43,7 @@ public class PacketCodeC {
     static {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
@@ -42,9 +55,9 @@ public class PacketCodeC {
      * @param packet
      * @return
      */
-    public ByteBuf encode(Packet packet){
+    public ByteBuf encode(ByteBufAllocator byteBufAllocator,Packet packet){
         //1.创建 ByteBuf对象
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
         //2.序列化java对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 

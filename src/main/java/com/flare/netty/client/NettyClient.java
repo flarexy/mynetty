@@ -1,11 +1,11 @@
 package com.flare.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringEncoder;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +20,8 @@ public class NettyClient {
 
     // 最大重连次数
     final static int MAX_RETRY = 50;
+    private static final String HOST = "127.0.0.1";
+    private static final int PORT = 8000;
 
     public static void main(String[] args) throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
@@ -29,15 +31,19 @@ public class NettyClient {
                 .group(group)
                 // 2.指定 IO 类型为 NIO
                 .channel(NioSocketChannel.class)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
                 // 3.IO 处理逻辑
-                .handler(new ChannelInitializer<Channel>() {
+                .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(Channel channel) throws Exception {
-                        channel.pipeline().addLast(new StringEncoder());
+                    protected void initChannel(SocketChannel channel) throws Exception {
+                        // 调用自定义处理器
+                        channel.pipeline().addLast(new ClientHandler());
                     }
                 });
         // 4.建立连接
-        connect(bootstrap,"127.0.0.1",8000,MAX_RETRY);
+        connect(bootstrap,HOST,PORT,MAX_RETRY);
     }
 
     /**

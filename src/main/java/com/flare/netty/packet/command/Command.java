@@ -1,4 +1,4 @@
-package com.flare.netty.entity;
+package com.flare.netty.packet.command;
 
 /**
  * @ClassName Command
@@ -9,4 +9,6 @@ package com.flare.netty.entity;
 public interface Command {
 
     Byte LOGIN_REQUEST = 1;
+
+    Byte LOGIN_RESPONSE = 2;
 }

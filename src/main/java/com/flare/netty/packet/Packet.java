@@ -1,4 +1,4 @@
-package com.flare.netty.entity;
+package com.flare.netty.packet;
 
 import lombok.Data;
 
