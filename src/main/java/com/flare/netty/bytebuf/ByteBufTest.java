@@ -1,4 +1,4 @@
-package com.flare.netty;
+package com.flare.netty.bytebuf;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
