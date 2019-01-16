@@ -4,6 +4,8 @@ import com.flare.netty.packet.request.LoginRequestPacket;
 import com.flare.netty.packet.response.LoginResponsePacket;
 import com.flare.netty.packet.Packet;
 import com.flare.netty.packet.PacketCodeC;
+import com.flare.netty.packet.response.MessageResponsePacket;
+import com.flare.netty.util.LoginUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -23,7 +25,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
         System.out.println("客户端开始登录");
-
         // 创建登陆对象
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         loginRequestPacket.setUserId(UUID.randomUUID().toString());
@@ -45,10 +46,15 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         if (packet instanceof LoginResponsePacket){
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
             if (loginResponsePacket.getSuccess()){
+                // 绑定登录成功标识
+                LoginUtil.markAsLogin(ctx.channel());
                 System.out.println(new Date() + "：登录成功");
             }else {
                 System.out.println(new Date() + "：登录失败，原因：" + loginResponsePacket.getMsg());
             }
+        } else if (packet instanceof MessageResponsePacket){
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            System.out.println(new Date() + ": 收到服务端的消息: " + messageResponsePacket.getMessage());
         }
     }
 }
