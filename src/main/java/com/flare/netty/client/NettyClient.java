@@ -2,6 +2,7 @@ package com.flare.netty.client;
 
 import com.flare.netty.codec.PacketDecoder;
 import com.flare.netty.codec.PacketEncoder;
+import com.flare.netty.codec.Spliter;
 import com.flare.netty.handler.inbound.LoginResponseHandler;
 import com.flare.netty.handler.inbound.MessageResponseHandler;
 import com.flare.netty.packet.PacketCodeC;
@@ -50,7 +51,11 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         // 调用自定义处理器
+//                        channel.pipeline().addLast(new FirstClientHandler());
 //                        channel.pipeline().addLast(new ClientHandler());
+//                        channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        //使用spliter继承LengthFieldBasedFrameDecoder，实现判断开头和长度
+                        channel.pipeline().addLast(new Spliter());
                         channel.pipeline().addLast(new PacketDecoder());
                         channel.pipeline().addLast(new LoginResponseHandler());
                         channel.pipeline().addLast(new MessageResponseHandler());

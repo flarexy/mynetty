@@ -2,6 +2,7 @@ package com.flare.netty.server;
 
 import com.flare.netty.codec.PacketDecoder;
 import com.flare.netty.codec.PacketEncoder;
+import com.flare.netty.codec.Spliter;
 import com.flare.netty.handler.inbound.LoginRequestHandler;
 import com.flare.netty.handler.inbound.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -48,7 +49,12 @@ public class NettyServer {
                         // 调用自定义处理器
                         // inBound，处理读数据的逻辑链
 //                        nioSocketChannel.pipeline().addLast(new ServerHandler());
+//                        nioSocketChannel.pipeline().addLast(new FirstServerHandler());
                         // 使用特定处理handel
+                        // 基于长度域拆包器 Integer.MAX_VALUE：数据包最大长度  7：长度域偏移量，4 ：长度域长度长度
+//                        nioSocketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        //使用spliter继承LengthFieldBasedFrameDecoder，实现判断开头和长度
+                        nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(new PacketDecoder());
                         nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler());

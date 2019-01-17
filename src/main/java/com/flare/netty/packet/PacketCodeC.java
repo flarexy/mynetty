@@ -20,7 +20,7 @@ import java.util.Map;
  * @Data 2019/1/15
  */
 public class PacketCodeC {
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
 
     private static class SingletonHandler {
         public static PacketCodeC INSTANCE = new PacketCodeC();
