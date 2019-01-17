@@ -58,6 +58,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             ByteBuf responseByteBuf = PacketCodeC.getInstance().encode(ctx.alloc(),messageResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
         }
+        super.channelRead(ctx, msg);
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
