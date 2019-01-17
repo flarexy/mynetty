@@ -1,5 +1,9 @@
 package com.flare.netty.client;
 
+import com.flare.netty.codec.PacketDecoder;
+import com.flare.netty.codec.PacketEncoder;
+import com.flare.netty.handler.inbound.LoginResponseHandler;
+import com.flare.netty.handler.inbound.MessageResponseHandler;
 import com.flare.netty.packet.PacketCodeC;
 import com.flare.netty.packet.request.MessageRequestPacket;
 import com.flare.netty.util.LoginUtil;
@@ -46,7 +50,12 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         // 调用自定义处理器
-                        channel.pipeline().addLast(new ClientHandler());
+//                        channel.pipeline().addLast(new ClientHandler());
+                        channel.pipeline().addLast(new PacketDecoder());
+                        channel.pipeline().addLast(new LoginResponseHandler());
+                        channel.pipeline().addLast(new MessageResponseHandler());
+                        channel.pipeline().addLast(new PacketEncoder());
+
                     }
                 });
         // 4.建立连接

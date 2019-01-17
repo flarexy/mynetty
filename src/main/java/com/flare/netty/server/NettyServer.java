@@ -1,5 +1,9 @@
 package com.flare.netty.server;
 
+import com.flare.netty.codec.PacketDecoder;
+import com.flare.netty.codec.PacketEncoder;
+import com.flare.netty.handler.inbound.LoginRequestHandler;
+import com.flare.netty.handler.inbound.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -43,15 +47,13 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel nioSocketChannel) {
                         // 调用自定义处理器
                         // inBound，处理读数据的逻辑链
-                        nioSocketChannel.pipeline().addLast(new ServerHandler());
-                        nioSocketChannel.pipeline().addLast(new InBoundHandlerA());
-                        nioSocketChannel.pipeline().addLast(new InBoundHandlerB());
-                        nioSocketChannel.pipeline().addLast(new InBoundHandlerC());
+//                        nioSocketChannel.pipeline().addLast(new ServerHandler());
+                        // 使用特定处理handel
+                        nioSocketChannel.pipeline().addLast(new PacketDecoder());
+                        nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new PacketEncoder());
 
-                        // outBound，处理写数据的逻辑链
-                        nioSocketChannel.pipeline().addLast(new OutBoundHandlerA());
-                        nioSocketChannel.pipeline().addLast(new OutBoundHandlerB());
-                        nioSocketChannel.pipeline().addLast(new OutBoundHandlerC());
                     }
                 });
 

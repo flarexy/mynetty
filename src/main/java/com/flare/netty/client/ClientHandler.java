@@ -1,16 +1,11 @@
 package com.flare.netty.client;
 
-import com.flare.netty.packet.request.LoginRequestPacket;
-import com.flare.netty.packet.response.LoginResponsePacket;
-import com.flare.netty.packet.Packet;
 import com.flare.netty.packet.PacketCodeC;
-import com.flare.netty.packet.response.MessageResponsePacket;
-import com.flare.netty.util.LoginUtil;
+import com.flare.netty.packet.request.LoginRequestPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -38,7 +33,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         ctx.channel().writeAndFlush(byteBuf);
     }
 
-    @Override
+    /*@Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf requestByteBuf = (ByteBuf) msg;
         // 解码
@@ -56,5 +51,5 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
             System.out.println(new Date() + ": 收到服务端的消息: " + messageResponsePacket.getMessage());
         }
-    }
+    }*/
 }
