@@ -1,9 +1,7 @@
 package com.flare.netty.handler.inbound;
 
-import com.flare.netty.packet.PacketCodeC;
 import com.flare.netty.packet.request.LoginRequestPacket;
 import com.flare.netty.packet.response.LoginResponsePacket;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
