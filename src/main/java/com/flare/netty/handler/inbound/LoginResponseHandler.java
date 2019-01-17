@@ -1,10 +1,8 @@
 package com.flare.netty.handler.inbound;
 
-import com.flare.netty.packet.PacketCodeC;
 import com.flare.netty.packet.request.LoginRequestPacket;
 import com.flare.netty.packet.response.LoginResponsePacket;
 import com.flare.netty.util.LoginUtil;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -27,12 +25,12 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         loginRequestPacket.setUserId(UUID.randomUUID().toString());
         loginRequestPacket.setUsername("flare");
         loginRequestPacket.setPassword("pwd");
+        ctx.channel().writeAndFlush(loginRequestPacket);
 
         // 编码
-        ByteBuf byteBuf = PacketCodeC.getInstance().encode(ctx.alloc(),loginRequestPacket);
-
+//        ByteBuf byteBuf = PacketCodeC.getInstance().encode(ctx.alloc(),loginRequestPacket);
         //写数据
-        ctx.channel().writeAndFlush(byteBuf);
+//        ctx.channel().writeAndFlush(byteBuf);
     }
 
     @Override
@@ -44,5 +42,10 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         }else {
             System.out.println(new Date() + "：登录失败，原因：" + loginResponsePacket.getMsg());
         }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("客户端连接被关闭!");
     }
 }

@@ -1,4 +1,4 @@
-package com.flare.netty.server;
+package com.flare.netty.server.handler;
 
 import com.flare.netty.packet.Packet;
 import com.flare.netty.packet.PacketCodeC;

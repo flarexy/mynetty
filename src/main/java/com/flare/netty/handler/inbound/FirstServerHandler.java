@@ -1,4 +1,4 @@
-package com.flare.netty.server;
+package com.flare.netty.handler.inbound;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

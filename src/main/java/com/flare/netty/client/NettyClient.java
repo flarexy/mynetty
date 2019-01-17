@@ -5,11 +5,8 @@ import com.flare.netty.codec.PacketEncoder;
 import com.flare.netty.codec.Spliter;
 import com.flare.netty.handler.inbound.LoginResponseHandler;
 import com.flare.netty.handler.inbound.MessageResponseHandler;
-import com.flare.netty.packet.PacketCodeC;
 import com.flare.netty.packet.request.MessageRequestPacket;
-import com.flare.netty.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -97,19 +94,19 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
         new Thread(()->{
             while (!Thread.interrupted()){
-                if (LoginUtil.hasLogin(channel)) {
+//                if (LoginUtil.hasLogin(channel)) {
                     System.out.println("输出消息发送至服务器：");
                     Scanner sc = new Scanner(System.in);
                     String line = sc.nextLine();
 
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(line);
+                    channel.writeAndFlush(messageRequestPacket);
 
-                    ByteBuf byteBuf = PacketCodeC.getInstance().encode(channel.alloc(),messageRequestPacket);
-                    channel.writeAndFlush(byteBuf);
-                }
+//                    ByteBuf byteBuf = PacketCodeC.getInstance().encode(channel.alloc(),messageRequestPacket);
+//                    channel.writeAndFlush(byteBuf);
+//                }
             }
         }).start();
-
     }
 }

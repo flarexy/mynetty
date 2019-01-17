@@ -1,19 +1,19 @@
-package com.flare.netty.server;
+package com.flare.netty.handler.inbound;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * @ClassName InBoundHandlerB
- * @Description InBoundHandlerB
+ * @ClassName InBoundHandlerC
+ * @Description InBoundHandlerC
  * @Author xieyi
  * @Data 2019/1/17
  */
-public class InBoundHandlerB extends ChannelInboundHandlerAdapter {
+public class InBoundHandlerC extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("测试BBB：" + msg);
+        System.out.println("测试CCC：" + msg);
         super.channelRead(ctx, msg);
     }
 }

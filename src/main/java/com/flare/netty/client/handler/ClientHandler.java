@@ -1,4 +1,4 @@
-package com.flare.netty.client;
+package com.flare.netty.client.handler;
 
 import com.flare.netty.packet.PacketCodeC;
 import com.flare.netty.packet.request.LoginRequestPacket;

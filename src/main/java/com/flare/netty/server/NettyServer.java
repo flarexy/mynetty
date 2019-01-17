@@ -3,6 +3,7 @@ package com.flare.netty.server;
 import com.flare.netty.codec.PacketDecoder;
 import com.flare.netty.codec.PacketEncoder;
 import com.flare.netty.codec.Spliter;
+import com.flare.netty.handler.inbound.AuthHandler;
 import com.flare.netty.handler.inbound.LoginRequestHandler;
 import com.flare.netty.handler.inbound.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -57,6 +58,8 @@ public class NettyServer {
                         nioSocketChannel.pipeline().addLast(new Spliter());
                         nioSocketChannel.pipeline().addLast(new PacketDecoder());
                         nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+                        // 新增加用户认证handler
+                        nioSocketChannel.pipeline().addLast(new AuthHandler());
                         nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
                         nioSocketChannel.pipeline().addLast(new PacketEncoder());
 
