@@ -1,13 +1,12 @@
 package com.flare.netty.handler.inbound;
 
-import com.flare.netty.packet.request.LoginRequestPacket;
 import com.flare.netty.packet.response.LoginResponsePacket;
-import com.flare.netty.util.LoginUtil;
+import com.flare.netty.session.Session;
+import com.flare.netty.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @ClassName LoginResponseHandler
@@ -16,30 +15,17 @@ import java.util.UUID;
  * @Data 2019/1/17
  */
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-        System.out.println("客户端开始登录");
-        // 创建登陆对象
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-        loginRequestPacket.setUserId(UUID.randomUUID().toString());
-        loginRequestPacket.setUsername("flare");
-        loginRequestPacket.setPassword("pwd");
-        ctx.channel().writeAndFlush(loginRequestPacket);
-
-        // 编码
-//        ByteBuf byteBuf = PacketCodeC.getInstance().encode(ctx.alloc(),loginRequestPacket);
-        //写数据
-//        ctx.channel().writeAndFlush(byteBuf);
-    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) throws Exception {
+
+        String userId = loginResponsePacket.getUserId();
+        String userName = loginResponsePacket.getUserName();
         if (loginResponsePacket.getSuccess()){
             // 绑定登录成功标识
-            LoginUtil.markAsLogin(channelHandlerContext.channel());
-            System.out.println(new Date() + "：登录成功");
-        }else {
+            SessionUtil.bindSession(new Session(userId, userName), channelHandlerContext.channel());
+            System.out.println("[" + userName + "]登录成功，userId 为: " + loginResponsePacket.getUserId());
+        } else {
             System.out.println(new Date() + "：登录失败，原因：" + loginResponsePacket.getMsg());
         }
     }

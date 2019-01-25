@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @Author xieyi
  * @Data 2019/1/14
  */
-public class NettyClient {
+public class NettyClientA {
 
     // 最大重连次数
     final static int MAX_RETRY = 50;

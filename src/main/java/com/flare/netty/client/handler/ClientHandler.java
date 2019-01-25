@@ -23,7 +23,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         // 创建登陆对象
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         loginRequestPacket.setUserId(UUID.randomUUID().toString());
-        loginRequestPacket.setUsername("flare");
+        loginRequestPacket.setUserName("flare");
         loginRequestPacket.setPassword("pwd");
 
         // 编码
@@ -42,7 +42,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
             if (loginResponsePacket.getSuccess()){
                 // 绑定登录成功标识
-                LoginUtil.markAsLogin(ctx.channel());
+                SessionUtil.markAsLogin(ctx.channel());
                 System.out.println(new Date() + "：登录成功");
             }else {
                 System.out.println(new Date() + "：登录失败，原因：" + loginResponsePacket.getMsg());
